@@ -16,14 +16,16 @@
 
 package com.makeramen.roundedimageview;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.ImageView;
-import com.squareup.picasso.Transformation;
-import java.util.Arrays;
+
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+
+//import com.squareup.picasso.Transformation;
 
 public final class RoundedTransformationBuilder {
 
@@ -152,32 +154,33 @@ public final class RoundedTransformationBuilder {
   }
 
   /**
-   * Creates a {@link Transformation} for use with picasso.
+   * Creates a {@link BitmapTransformation} for use with picasso.
    *
-   * @return the {@link Transformation}
+   * @return the {@link BitmapTransformation}
    */
-  public Transformation build() {
-    return new Transformation() {
-      @Override public Bitmap transform(Bitmap source) {
-        Bitmap transformed = RoundedDrawable.fromBitmap(source)
-            .setScaleType(mScaleType)
-            .setCornerRadius(mCornerRadii[0], mCornerRadii[1], mCornerRadii[2], mCornerRadii[3])
-            .setBorderWidth(mBorderWidth)
-            .setBorderColor(mBorderColor)
-            .setOval(mOval)
-            .toBitmap();
-        if (!source.equals(transformed)) {
-          source.recycle();
-        }
-        return transformed;
-      }
-
-      @Override public String key() {
-        return "r:" + Arrays.toString(mCornerRadii)
-            + "b:" + mBorderWidth
-            + "c:" + mBorderColor
-            + "o:" + mOval;
-      }
-    };
+  public BitmapTransformation build(Context context) {
+    return new GlideRoundedCornerBitmapTransformation(context, mScaleType, mCornerRadii, mBorderWidth, mBorderColor, mOval);
+//    return new BitmapTransformation {
+//      @Override public Bitmap transform(Bitmap source) {
+//        Bitmap transformed = RoundedDrawable.fromBitmap(source)
+//            .setScaleType(mScaleType)
+//            .setCornerRadius(mCornerRadii[0], mCornerRadii[1], mCornerRadii[2], mCornerRadii[3])
+//            .setBorderWidth(mBorderWidth)
+//            .setBorderColor(mBorderColor)
+//            .setOval(mOval)
+//            .toBitmap();
+//        if (!source.equals(transformed)) {
+//          source.recycle();
+//        }
+//        return transformed;
+//      }
+//
+//      @Override public String key() {
+//        return "r:" + Arrays.toString(mCornerRadii)
+//            + "b:" + mBorderWidth
+//            + "c:" + mBorderColor
+//            + "o:" + mOval;
+//      }
+//    };
   }
 }

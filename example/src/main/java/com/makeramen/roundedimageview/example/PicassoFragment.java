@@ -29,9 +29,10 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 public class PicassoFragment extends Fragment {
 
@@ -67,7 +68,7 @@ public class PicassoFragment extends Fragment {
 
   class PicassoAdapter extends ArrayAdapter<PicassoItem> {
     private final LayoutInflater mInflater;
-    private final Transformation mTransformation;
+    private final BitmapTransformation mTransformation;
 
     public PicassoAdapter(Context context) {
       super(context, 0);
@@ -77,7 +78,7 @@ public class PicassoFragment extends Fragment {
           .borderColor(Color.BLACK)
           .borderWidthDp(3)
           .oval(false)
-          .build();
+          .build(context);
     }
 
     @Override public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -93,9 +94,9 @@ public class PicassoFragment extends Fragment {
       ImageView imageView = ((ImageView) view.findViewById(R.id.imageView1));
       imageView.setScaleType(item.mScaleType);
 
-      Picasso.with(getContext())
+      Glide.with(getContext())
           .load(item.mUrl)
-          .fit()
+          //.fit()
           .transform(mTransformation)
           .into(imageView);
 
